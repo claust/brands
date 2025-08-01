@@ -19,6 +19,15 @@ dist-ssr
 .rolldown
 .vite
 
+# Logo files (copyright concerns)
+public/logos/
+public/logos_backup/
+public/logos_original/
+**/logo-*.webp
+**/logo-*.jpg
+**/logo-*.png
+**/logo-*.svg
+
 # Testing
 coverage
 *.lcov
