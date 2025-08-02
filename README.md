@@ -2,6 +2,15 @@
 
 Vue 3 + Vite app with shadcn/ui for visualizing brand-company relationships.
 
+## Quick Start
+
+```bash
+./setup.sh          # Automated setup (recommended)
+npm run dev          # Start development server
+```
+
+📋 **For detailed setup instructions, see [SETUP.md](SETUP.md)**
+
 ## Features
 
 - **Network Graph**: D3.js force-directed visualization of companies/brands
@@ -37,6 +46,21 @@ Automated logo collection tool that downloads brand logos from image search resu
 npm run logo-search:test    # Test with first 5 brands
 npm run logo-search         # Search all 674+ brands
 npm run logo-search:resume  # Resume interrupted search
+```
+
+## Company Information Extraction
+
+Extract company information (headquarters, founded year, employees, revenue) using Gemini CLI:
+
+```bash
+# Single company extraction using Claude CLI (saves to file)
+sed 's/\[COMPANY_NAME\]/PepsiCo Inc./g' scripts/company-extraction-agent-prompt.md | claude -p "Extract company information for PepsiCo Inc.:" > pepsico_inc.json
+
+# Single company extraction using Gemini CLI (saves to file)
+sed 's/\[COMPANY_NAME\]/PepsiCo Inc./g' scripts/company-extraction-agent-prompt.md | gemini -p "Extract company information for PepsiCo Inc.:" > pepsico_inc.json
+
+# Replace "PepsiCo Inc." with any company name from the dataset
+# The prompt now returns only JSON output that can be directly saved to a file
 ```
 
 See [`scripts/README.md`](scripts/README.md) for detailed usage instructions.

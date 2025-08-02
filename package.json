@@ -19,9 +19,18 @@
     "logo-standardize": "tsx scripts/logo-standardizer.ts",
     "logo-standardize:resume": "tsx scripts/logo-standardizer.ts --resume",
     "logo-standardize:test": "tsx scripts/logo-standardizer.ts --limit=5",
-    "logo-standardize:stats": "tsx scripts/logo-standardizer.ts --stats"
+    "logo-standardize:stats": "tsx scripts/logo-standardizer.ts --stats",
+    "company-info": "tsx scripts/company-info-scraper.ts",
+    "company-info:test": "tsx scripts/company-info-scraper.ts --limit=5",
+    "company-info:resume": "tsx scripts/company-info-scraper.ts --resume",
+    "company-info:extract": "tsx scripts/company-info-extractor.ts",
+    "company-info:merge": "tsx scripts/company-info-merger.ts",
+    "functions:check": "cd supabase/functions && deno check companies/index.ts brands/index.ts search/index.ts stats/index.ts",
+    "functions:lint": "cd supabase/functions && deno lint",
+    "functions:fmt": "cd supabase/functions && deno fmt"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.53.0",
     "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/typography": "^0.5.16",
     "@types/sharp": "^0.31.1",

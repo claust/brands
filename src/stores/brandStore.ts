@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import type { Company, Brand, Category } from '@/types'
+import type { Company, Brand, Category, CompanyWithRelations } from '@/types'
+import { useCompanies, useBrands, useStats } from '@/composables/useSupabase'
 
 export const useBrandStore = defineStore('brands', () => {
   const companies = ref<Company[]>([])
@@ -8,6 +9,12 @@ export const useBrandStore = defineStore('brands', () => {
   const searchQuery = ref('')
   const selectedCategory = ref<Category | null>(null)
   const isLoading = ref(false)
+  const error = ref<string | null>(null)
+
+  // Composables
+  const { fetchCompanies, fetchCompanyDetails } = useCompanies()
+  const { fetchBrands } = useBrands()
+  const { fetchStats } = useStats()
 
   const companiesWithBrands = computed(() => {
     return companies.value.map((company) => ({
@@ -74,21 +81,48 @@ export const useBrandStore = defineStore('brands', () => {
     return parent ? findTopParent(parent) : company
   }
 
-  function getCompanyById(id: string) {
-    return companiesWithBrands.value.find((c) => c.id === id)
+  async function getCompanyById(id: string): Promise<CompanyWithRelations | null> {
+    try {
+      isLoading.value = true
+      error.value = null
+      const company = await fetchCompanyDetails(id)
+      return company
+    } catch (err) {
+      error.value = err instanceof Error ? err.message : 'Failed to fetch company'
+      return null
+    } finally {
+      isLoading.value = false
+    }
   }
 
   async function loadData() {
     isLoading.value = true
+    error.value = null
+    
     try {
-      const response = await fetch('/brands.json')
-      const data = await response.json()
-      companies.value = data.companies || []
-      brands.value = data.brands || []
-    } catch (error) {
-      console.error('Failed to load brand data:', error)
+      // Load all companies and brands
+      const [companiesResult, brandsResult] = await Promise.all([
+        fetchCompanies({ limit: 1000 }),
+        fetchBrands({ limit: 1000 })
+      ])
+      
+      companies.value = companiesResult.data
+      brands.value = brandsResult.data
+    } catch (err) {
+      error.value = err instanceof Error ? err.message : 'Failed to load data'
+      console.error('Failed to load brand data:', err)
     } finally {
       isLoading.value = false
+    }
+  }
+
+  async function loadStats() {
+    try {
+      const stats = await fetchStats()
+      return stats
+    } catch (err) {
+      console.error('Failed to load stats:', err)
+      return null
     }
   }
 
@@ -98,12 +132,14 @@ export const useBrandStore = defineStore('brands', () => {
     searchQuery,
     selectedCategory,
     isLoading,
+    error,
     companiesWithBrands,
     topLevelCompanies,
     brandsByCategory,
     filteredBrands,
     statistics,
     getCompanyById,
-    loadData
+    loadData,
+    loadStats
   }
 })
