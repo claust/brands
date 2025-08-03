@@ -1,15 +1,13 @@
-# Development Setup Guide
+# Setup Guide
 
-This guide will help you set up the Brand Ownership Visualization project on a new Mac.
+This guide will help you set up the Brand Ownership Visualization project.
 
 ## Prerequisites
 
-1. **Homebrew** - Install from [brew.sh](https://brew.sh/) or run:
-   ```bash
-   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-   ```
+1. **macOS** with [Homebrew](https://brew.sh/) installed
+2. **Node.js** 18+ (will be installed by setup script)
 
-## Quick Setup (Recommended)
+## Automated Setup (Recommended)
 
 Run the automated setup script:
 
@@ -21,24 +19,20 @@ This will install all dependencies and configure your development environment.
 
 ## Manual Setup
 
-If you prefer to install manually:
+<details>
+<summary>Click to expand manual setup instructions</summary>
 
 ### 1. Install Development Tools
 
 ```bash
 # Using Brewfile (recommended)
 brew bundle
-```
 
-<details>
-<summary>Or install individually if needed</summary>
-
-```bash
+# Or install individually:
 brew install node
 brew install deno
 brew install supabase/tap/supabase
 ```
-</details>
 
 ### 2. Install VS Code Extensions
 
@@ -66,28 +60,25 @@ cp .env.example .env
 # Add your Supabase keys to .env
 ```
 
-## Required Tools Summary
-
-| Tool | Purpose | Install Command |
-|------|---------|-----------------|
-| **Node.js** | Vue.js development | `brew install node` |
-| **Deno** | Edge Functions development | `brew install deno` |
-| **Supabase CLI** | Database & function deployment | `brew install supabase/tap/supabase` |
-| **Playwright** | Logo scraping automation | `npx playwright install` |
-
-## VS Code Extensions
-
-- **Deno** (`denoland.vscode-deno`) - TypeScript support for Edge Functions
-- **Vue Language Features** (`Vue.volar`) - Vue.js development
+</details>
 
 ## Environment Variables
 
-Copy `.env.example` to `.env` and add:
+Create a `.env` file with:
 
 ```bash
 VITE_SUPABASE_URL=your_supabase_url
 VITE_SUPABASE_ANON_KEY=your_anon_key
 ```
+
+## Required Tools
+
+| Tool | Purpose | Install Command |
+|------|---------|------------------|
+| **Node.js** | Vue.js development | `brew install node` |
+| **Deno** | Edge Functions development | `brew install deno` |
+| **Supabase CLI** | Database & function deployment | `brew install supabase/tap/supabase` |
+| **Playwright** | Logo scraping automation | `npx playwright install` |
 
 ## Verification
 
@@ -99,23 +90,39 @@ npm run typecheck          # Should pass without errors
 npm run functions:check    # Should validate Edge Functions
 ```
 
-## Development Commands
+## CI/CD Pipeline Setup
 
+### Required GitHub Secrets
+
+To set up the CI/CD pipeline, you need to configure the following GitHub secrets:
+
+#### `SUPABASE_ACCESS_TOKEN`
+- **Description**: Your Supabase access token for authentication
+- **How to get**: 
+  1. Go to [Supabase Dashboard](https://supabase.com/dashboard)
+  2. Navigate to Account Settings > Access Tokens
+  3. Generate a new token with the necessary permissions
+
+#### `SUPABASE_PROJECT_REF`
+- **Description**: Your Supabase project reference ID
+- **How to get**: 
+  1. Go to your project in the Supabase Dashboard
+  2. Copy the project reference from the URL (e.g., `your-project-ref`)
+  3. Or find it in Settings > General > Reference ID
+
+### Setting Up Secrets
+
+Using GitHub CLI (recommended):
 ```bash
-# Development
-npm run dev                    # Start development server
-npm run build                  # Build for production
-npm run lint                   # Check code quality
-
-# Edge Functions
-npm run functions:check        # TypeScript validation
-npm run functions:lint         # Deno linting
-npm run functions:fmt          # Format code
-
-# Data Tools
-npm run logo-search           # Search for brand logos
-npm run company-info          # Scrape company data
+gh secret set SUPABASE_ACCESS_TOKEN --body "your-access-token"
+gh secret set SUPABASE_PROJECT_REF --body "your-project-ref"
 ```
+
+Or manually:
+1. Go to your GitHub repository
+2. Navigate to Settings > Secrets and variables > Actions
+3. Click "New repository secret"
+4. Add each secret with the exact name and value
 
 ## Troubleshooting
 

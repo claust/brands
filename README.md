@@ -2,16 +2,18 @@
 
 Vue 3 + Vite app with shadcn/ui for visualizing brand-company relationships.
 
-## Quick Start
+Educational tool for understanding corporate brand ownership hierarchies.
+
+## 🚀 Quick Start
 
 ```bash
 ./setup.sh          # Automated setup (recommended)
-npm run dev          # Start development server
+npm run dev         # Start development server
 ```
 
 📋 **For detailed setup instructions, see [SETUP.md](SETUP.md)**
 
-## Features
+## ✨ Features
 
 - **Network Graph**: D3.js force-directed visualization of companies/brands
 - **Tree View**: Hierarchical corporate structure explorer  
@@ -29,13 +31,21 @@ npm run dev          # Start development server
 - Tailwind CSS
 - Vite with Rolldown bundler
 
-## Development
+## 💻 Development
 
 ```bash
-npm run dev      # Start development server
-npm run build    # Build for production
-npm run lint     # Check code quality
+npm run dev       # Start development server
+npm run build     # Build for production
+npm run lint      # Check code quality
 npm run typecheck # TypeScript checking
+```
+
+### Edge Functions Commands
+
+```bash
+npm run functions:check  # TypeScript validation
+npm run functions:lint   # Deno linting
+npm run functions:fmt    # Format code
 ```
 
 ## Logo Search Tool
@@ -65,4 +75,10 @@ sed 's/\[COMPANY_NAME\]/PepsiCo Inc./g' scripts/company-extraction-agent-prompt.
 
 See [`scripts/README.md`](scripts/README.md) for detailed usage instructions.
 
-Educational tool for understanding corporate brand ownership hierarchies.
+## 🚢 CI/CD Pipeline
+
+This project includes a GitHub Actions workflow that automatically:
+- Runs linting and type checking on all pushes and pull requests
+- Deploys Supabase Edge Functions when pushing to the `master` branch
+
+For GitHub secrets setup, see [SETUP.md](SETUP.md#cicd-pipeline-setup).
