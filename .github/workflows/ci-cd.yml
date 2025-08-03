@@ -76,7 +76,7 @@ jobs:
         run: npm run dev &
         env:
           VITE_SUPABASE_URL: https://jvmheqibdwxevwxxrecv.supabase.co
-          VITE_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp2bWhlcWliZHd4ZXZ3eHhyZWN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQxNzMwMDIsImV4cCI6MjA2OTc0OTAwMn0.tTCKKh_Vq4q0sYEUcUTPfGgcYy5K2-5kLqGJA8YJGPc
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         
       - name: Wait for server to be ready
         run: |

@@ -24,13 +24,10 @@ test('page loads without errors', async ({ page }) => {
   // Wait a moment for any errors to surface
   await page.waitForTimeout(1000);
   
-  // Assert no console errors (excluding known build issues and expected CI errors)
+  // Assert no console errors (excluding known build issues)
   const relevantErrors = errors.filter(error => 
     !error.includes('Failed to resolve extends base type') &&
-    !error.includes('[@vue/compiler-sfc]') &&
-    !error.includes('status of 401') &&
-    !error.includes('Invalid API key') &&
-    !error.includes('Failed to load brand data')
+    !error.includes('[@vue/compiler-sfc]')
   );
   expect(relevantErrors).toHaveLength(0);
 });

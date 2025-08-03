@@ -47,17 +47,14 @@ test.describe('Basic App Tests', () => {
     await page.goto('/');
     await page.waitForTimeout(2000);
     
-    // Filter out development/build related errors and expected CI errors
+    // Filter out development/build related errors
     const criticalErrors = errors.filter(error => 
       !error.includes('HMR') &&
       !error.includes('WebSocket') &&
       !error.includes('Failed to resolve extends base type') &&
       !error.includes('[@vue/compiler-sfc]') &&
       !error.includes('vite') &&
-      !error.toLowerCase().includes('sockjs') &&
-      !error.includes('status of 401') &&
-      !error.includes('Invalid API key') &&
-      !error.includes('Failed to load brand data')
+      !error.toLowerCase().includes('sockjs')
     );
     
     expect(criticalErrors).toHaveLength(0);
