@@ -75,7 +75,7 @@ jobs:
       - name: Start dev server
         run: npm run dev &
         env:
-          VITE_SUPABASE_URL: https://jvmheqibdwxevwxxrecv.supabase.co
+          VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         
       - name: Wait for server to be ready
