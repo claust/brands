@@ -5,7 +5,7 @@ import type { Brand } from '@/types'
 import { useBrandStore } from '@/stores/brandStore'
 import { getBrandLogoPath } from '@/utils/logoUtils'
 import Card from '@/components/ui/Card.vue'
-import { Building2, ArrowRight } from 'lucide-vue-next'
+import { Building2 } from 'lucide-vue-next'
 
 interface Props {
   brand: Brand
@@ -50,10 +50,10 @@ function getCategoryColor(category: string) {
   return categoryColors[category] || 'bg-gray-100 text-gray-800 border-gray-200'
 }
 
-function navigateToCompany() {
-  if (owner.value) {
-    router.push(`/company/${owner.value.id}`)
-  }
+
+function navigateToCategory() {
+  brandStore.selectedCategory = props.brand.category
+  router.push('/categories')
 }
 </script>
 
@@ -61,14 +61,14 @@ function navigateToCompany() {
   <Card class="group p-4">
     <div class="space-y-3">
       <div class="flex items-start justify-between">
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-4">
           <div class="flex-shrink-0">
             <img 
               :src="logoPath" 
               :alt="`${brand.name} logo`"
-              class="h-8 w-8 rounded-full bg-white border border-gray-200 object-contain p-1"
-              @error="$event.target.style.display = 'none'"
-            />
+              class="h-16 w-16 rounded-lg bg-white border border-gray-200 object-contain p-2 shadow-sm"
+              @error="($event.target as HTMLImageElement).style.display = 'none'"
+            >
           </div>
           <h3 class="text-lg font-semibold">
             {{ brand.name }}
@@ -76,14 +76,16 @@ function navigateToCompany() {
         </div>
       </div>
 
-      <span
+      <button
         :class="[
-          'inline-flex rounded-md border px-2 py-1 text-xs font-medium',
+          'inline-flex rounded-md border px-2 py-1 text-xs font-medium transition-colors hover:bg-opacity-80 cursor-pointer',
           getCategoryColor(brand.category)
         ]"
+        :title="`View all ${brand.category} brands`"
+        @click="navigateToCategory"
       >
         {{ brand.category }}
-      </span>
+      </button>
 
       <div class="space-y-1">
         <div class="flex items-center gap-2 text-sm">
@@ -92,7 +94,10 @@ function navigateToCompany() {
           <span class="font-medium">{{ owner?.name }}</span>
         </div>
 
-        <div v-if="topParent && topParent.id !== owner?.id" class="flex items-center gap-2 text-sm">
+        <div
+          v-if="topParent && topParent.id !== owner?.id"
+          class="flex items-center gap-2 text-sm"
+        >
           <div class="w-4" />
           <span class="text-muted-foreground">Parent:</span>
           <span class="font-medium">{{ topParent.name }}</span>

@@ -3,7 +3,6 @@ import { computed } from 'vue'
 import { useBrandStore } from '@/stores/brandStore'
 import { Building2, Package, Grid3x3, TrendingUp } from 'lucide-vue-next'
 import Card from '@/components/ui/Card.vue'
-import Button from '@/components/ui/Button.vue'
 import { useRouter } from 'vue-router'
 
 const brandStore = useBrandStore()
@@ -42,7 +41,9 @@ const statCards = computed(() => [
 <template>
   <div class="space-y-8">
     <div>
-      <h2 class="text-3xl font-bold tracking-tight">Brand Ownership Dashboard</h2>
+      <h2 class="text-3xl font-bold tracking-tight">
+        Brand Ownership Dashboard
+      </h2>
       <p class="text-muted-foreground mt-2">
         Explore the complex relationships between consumer brands and their parent companies
       </p>
@@ -50,20 +51,33 @@ const statCards = computed(() => [
 
     <!-- Stats Grid -->
     <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-      <Card v-for="stat in statCards" :key="stat.title" class="p-6">
+      <Card
+        v-for="stat in statCards"
+        :key="stat.title"
+        class="p-6"
+      >
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-muted-foreground text-sm font-medium">{{ stat.title }}</p>
-            <p class="text-2xl font-bold">{{ stat.value.toLocaleString() }}</p>
+            <p class="text-muted-foreground text-sm font-medium">
+              {{ stat.title }}
+            </p>
+            <p class="text-2xl font-bold">
+              {{ stat.value.toLocaleString() }}
+            </p>
           </div>
-          <component :is="stat.icon" :class="['h-8 w-8', stat.color]" />
+          <component
+            :is="stat.icon"
+            :class="['h-8 w-8', stat.color]"
+          />
         </div>
       </Card>
     </div>
 
     <!-- Top Companies -->
     <Card class="p-6">
-      <h3 class="mb-4 text-lg font-semibold">Top Companies by Brand Count</h3>
+      <h3 class="mb-4 text-lg font-semibold">
+        Top Companies by Brand Count
+      </h3>
       <div class="space-y-3">
         <div
           v-for="(company, index) in stats.topCompanies"
@@ -76,8 +90,12 @@ const statCards = computed(() => [
           <div class="flex items-center gap-3">
             <span class="text-muted-foreground text-2xl font-bold">{{ index + 1 }}</span>
             <div>
-              <p class="font-medium">{{ company.name }}</p>
-              <p class="text-muted-foreground text-sm">{{ company.count }} brands</p>
+              <p class="font-medium">
+                {{ company.name }}
+              </p>
+              <p class="text-muted-foreground text-sm">
+                {{ company.count }} brands
+              </p>
             </div>
           </div>
           <div class="flex items-center gap-2">
@@ -98,8 +116,10 @@ const statCards = computed(() => [
         class="cursor-pointer p-6 transition-shadow hover:shadow-lg"
         @click="router.push('/network')"
       >
-        <Network class="text-primary mb-3 h-8 w-8" />
-        <h3 class="font-semibold">Network Visualization</h3>
+        <Grid3x3 class="text-primary mb-3 h-8 w-8" />
+        <h3 class="font-semibold">
+          Network Visualization
+        </h3>
         <p class="text-muted-foreground mt-1 text-sm">
           Explore interactive network graph of brand relationships
         </p>
@@ -109,14 +129,18 @@ const statCards = computed(() => [
         @click="router.push('/categories')"
       >
         <Grid3x3 class="text-primary mb-3 h-8 w-8" />
-        <h3 class="font-semibold">Browse by Category</h3>
+        <h3 class="font-semibold">
+          Browse by Category
+        </h3>
         <p class="text-muted-foreground mt-1 text-sm">
           Discover brands organized by product categories
         </p>
       </Card>
       <Card class="p-6 transition-shadow hover:shadow-lg">
         <Building2 class="text-primary mb-3 h-8 w-8" />
-        <h3 class="font-semibold">Company Analysis</h3>
+        <h3 class="font-semibold">
+          Company Analysis
+        </h3>
         <p class="text-muted-foreground mt-1 text-sm">
           Deep dive into individual company portfolios
         </p>
@@ -124,3 +148,5 @@ const statCards = computed(() => [
     </div>
   </div>
 </template>
+
+<!-- Dashboard view shows brand ownership statistics and quick navigation -->

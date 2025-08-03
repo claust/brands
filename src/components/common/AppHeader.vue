@@ -20,7 +20,9 @@ const navigation = [
     <div class="container mx-auto flex h-16 items-center px-4">
       <div class="flex items-center gap-2">
         <Building2 class="text-primary h-6 w-6" />
-        <h1 class="text-xl font-bold">Brand Ownership</h1>
+        <h1 class="text-xl font-bold">
+          Brand Ownership
+        </h1>
       </div>
 
       <nav class="ml-8 hidden gap-6 md:flex">
@@ -33,7 +35,10 @@ const navigation = [
             route.path === item.href ? 'text-primary' : 'text-muted-foreground'
           ]"
         >
-          <component :is="item.icon" class="h-4 w-4" />
+          <component
+            :is="item.icon"
+            class="h-4 w-4"
+          />
           {{ item.name }}
         </router-link>
       </nav>
@@ -46,14 +51,23 @@ const navigation = [
           class="md:hidden"
           @click="isMobileMenuOpen = !isMobileMenuOpen"
         >
-          <Menu v-if="!isMobileMenuOpen" class="h-5 w-5" />
-          <X v-else class="h-5 w-5" />
+          <Menu
+            v-if="!isMobileMenuOpen"
+            class="h-5 w-5"
+          />
+          <X
+            v-else
+            class="h-5 w-5"
+          />
         </Button>
       </div>
     </div>
 
     <!-- Mobile menu -->
-    <div v-if="isMobileMenuOpen" class="border-t md:hidden">
+    <div
+      v-if="isMobileMenuOpen"
+      class="border-t md:hidden"
+    >
       <nav class="container mx-auto px-4 py-2">
         <router-link
           v-for="item in navigation"
@@ -65,7 +79,10 @@ const navigation = [
           ]"
           @click="isMobileMenuOpen = false"
         >
-          <component :is="item.icon" class="h-4 w-4" />
+          <component
+            :is="item.icon"
+            class="h-4 w-4"
+          />
           {{ item.name }}
         </router-link>
         <div class="mt-2">

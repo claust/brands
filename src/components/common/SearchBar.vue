@@ -47,7 +47,10 @@ function selectSuggestion(suggestion: any) {
 
 <template>
   <div class="relative w-full max-w-sm">
-    <form @submit.prevent="handleSearch" class="relative">
+    <form
+      class="relative"
+      @submit.prevent="handleSearch"
+    >
       <Search class="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
       <input
         v-model="localQuery"
@@ -56,7 +59,7 @@ function selectSuggestion(suggestion: any) {
         class="bg-background focus:ring-ring h-9 w-full rounded-md border pr-3 pl-9 text-sm outline-none focus:ring-1"
         @focus="isFocused = true"
         @blur="setTimeout(() => (isFocused = false), 200)"
-      />
+      >
     </form>
 
     <div

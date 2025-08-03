@@ -38,6 +38,9 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
+  variant: 'default',
+  size: 'default',
+  class: '',
   type: 'button',
   disabled: false
 })
@@ -48,7 +51,13 @@ const buttonClass = computed(() =>
 </script>
 
 <template>
-  <button :type="type" :disabled="disabled" :class="buttonClass">
+  <button
+    :type="type"
+    :disabled="disabled"
+    :class="buttonClass"
+  >
     <slot />
   </button>
 </template>
+
+<!-- Button component provides styled button with variants -->

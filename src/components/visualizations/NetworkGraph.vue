@@ -3,10 +3,9 @@ import { ref, onMounted, watch, computed } from 'vue'
 import * as d3 from 'd3'
 import { useBrandStore } from '@/stores/brandStore'
 import { getBrandLogoPath } from '@/utils/logoUtils'
-import type { Company, Brand } from '@/types'
 
 const brandStore = useBrandStore()
-const svgRef = ref<SVGSVGElement>()
+const svgRef = ref<SVGSVGElement | null>(null)
 const selectedNodeId = ref<string | null>(null)
 
 interface Node {
@@ -213,14 +212,14 @@ function initializeGraph() {
 
   // Add hover effects
   node
-    .on('mouseover', function (event, d) {
+    .on('mouseover', function (_event, d) {
       const circle = d3.select(this).select('circle')
       const image = d3.select(this).select('image')
       
       circle
         .transition()
         .duration(200)
-        .attr('r', (d: Node) => {
+        .attr('r', () => {
           const baseRadius = d.type === 'brand' && d.logoPath ? 12 : 
                             d.type === 'company' ? (d.level === 1 ? 12 : 10) : 8
           return baseRadius * 1.3
@@ -236,16 +235,16 @@ function initializeGraph() {
           .attr('height', 26)
       }
     })
-    .on('mouseout', function (event, d) {
+    .on('mouseout', function (_event, _d) {
       const circle = d3.select(this).select('circle')
       const image = d3.select(this).select('image')
       
       circle
         .transition()
         .duration(200)
-        .attr('r', (d: Node) => {
-          return d.type === 'brand' && d.logoPath ? 12 : 
-                 d.type === 'company' ? (d.level === 1 ? 12 : 10) : 8
+        .attr('r', () => {
+          return _d.type === 'brand' && _d.logoPath ? 12 : 
+                 _d.type === 'company' ? (_d.level === 1 ? 12 : 10) : 8
         })
       
       if (!image.empty()) {
@@ -327,21 +326,26 @@ watch(
 
 <template>
   <div class="relative h-full w-full">
-    <svg ref="svgRef" class="bg-background h-full w-full"></svg>
+    <svg
+      ref="svgRef"
+      class="bg-background h-full w-full"
+    />
 
     <!-- Legend -->
     <div class="bg-card absolute top-4 right-4 space-y-2 rounded-lg p-4 shadow-lg">
-      <h3 class="mb-2 text-sm font-semibold">Legend</h3>
+      <h3 class="mb-2 text-sm font-semibold">
+        Legend
+      </h3>
       <div class="flex items-center gap-2 text-sm">
-        <div class="h-3 w-3 rounded-full bg-blue-600"></div>
+        <div class="h-3 w-3 rounded-full bg-blue-600" />
         <span>Parent Company</span>
       </div>
       <div class="flex items-center gap-2 text-sm">
-        <div class="h-3 w-3 rounded-full bg-blue-400"></div>
+        <div class="h-3 w-3 rounded-full bg-blue-400" />
         <span>Subsidiary</span>
       </div>
       <div class="flex items-center gap-2 text-sm">
-        <div class="h-3 w-3 rounded-full bg-white border border-gray-300"></div>
+        <div class="h-3 w-3 rounded-full bg-white border border-gray-300" />
         <span>Brand (with logo)</span>
       </div>
     </div>

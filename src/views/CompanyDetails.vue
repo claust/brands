@@ -157,27 +157,46 @@ function getAllSubsidiaries(company: CompanyWithRelations): Company[] {
 
 <template>
   <!-- Loading State -->
-  <div v-if="isLoading" class="py-12 text-center">
-    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-    <p class="text-muted-foreground">Loading company details...</p>
+  <div
+    v-if="isLoading"
+    class="py-12 text-center"
+  >
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4" />
+    <p class="text-muted-foreground">
+      Loading company details...
+    </p>
   </div>
 
   <!-- Company Details -->
-  <div v-else-if="company" class="space-y-6">
+  <div
+    v-else-if="company"
+    class="space-y-6"
+  >
     <!-- Header -->
     <div class="flex items-center gap-4">
-      <Button variant="ghost" size="icon" @click="router.back()">
+      <Button
+        variant="ghost"
+        size="icon"
+        @click="router.back()"
+      >
         <ArrowLeft class="h-4 w-4" />
       </Button>
       <div class="flex-1">
         <div class="flex items-center gap-3">
-          <h2 class="text-3xl font-bold tracking-tight">{{ company.name }}</h2>
-          <span v-if="companyInfo?.ticker && companyInfo.ticker !== 'N/A'" 
-                class="bg-muted text-muted-foreground rounded-md px-2 py-1 text-sm font-medium">
+          <h2 class="text-3xl font-bold tracking-tight">
+            {{ company.name }}
+          </h2>
+          <span
+            v-if="companyInfo?.ticker && companyInfo.ticker !== 'N/A'" 
+            class="bg-muted text-muted-foreground rounded-md px-2 py-1 text-sm font-medium"
+          >
             {{ companyInfo.ticker }}
           </span>
         </div>
-        <div v-if="parentCompany" class="text-muted-foreground mt-1">
+        <div
+          v-if="parentCompany"
+          class="text-muted-foreground mt-1"
+        >
           Subsidiary of
           <router-link
             :to="`/company/${parentCompany.id}`"
@@ -191,39 +210,59 @@ function getAllSubsidiaries(company: CompanyWithRelations): Company[] {
 
     <!-- Company Overview -->
     <Card class="p-6">
-      <h3 class="mb-4 text-lg font-semibold">Company Overview</h3>
-      <p class="text-muted-foreground mb-6">{{ companyInfo?.description }}</p>
+      <h3 class="mb-4 text-lg font-semibold">
+        Company Overview
+      </h3>
+      <p class="text-muted-foreground mb-6">
+        {{ companyInfo?.description }}
+      </p>
       
       <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <div class="flex items-center gap-3">
           <Calendar class="h-5 w-5 text-blue-600" />
           <div>
-            <p class="text-muted-foreground text-sm">Founded</p>
-            <p class="font-semibold">{{ companyInfo?.founded }}</p>
+            <p class="text-muted-foreground text-sm">
+              Founded
+            </p>
+            <p class="font-semibold">
+              {{ companyInfo?.founded }}
+            </p>
           </div>
         </div>
         
         <div class="flex items-center gap-3">
           <MapPin class="h-5 w-5 text-green-600" />
           <div>
-            <p class="text-muted-foreground text-sm">Headquarters</p>
-            <p class="font-semibold">{{ companyInfo?.headquarters }}</p>
+            <p class="text-muted-foreground text-sm">
+              Headquarters
+            </p>
+            <p class="font-semibold">
+              {{ companyInfo?.headquarters }}
+            </p>
           </div>
         </div>
         
         <div class="flex items-center gap-3">
           <Users class="h-5 w-5 text-purple-600" />
           <div>
-            <p class="text-muted-foreground text-sm">Employees</p>
-            <p class="font-semibold">{{ companyInfo?.employees }}</p>
+            <p class="text-muted-foreground text-sm">
+              Employees
+            </p>
+            <p class="font-semibold">
+              {{ companyInfo?.employees }}
+            </p>
           </div>
         </div>
         
         <div class="flex items-center gap-3">
           <Building2 class="h-5 w-5 text-orange-600" />
           <div>
-            <p class="text-muted-foreground text-sm">CEO</p>
-            <p class="font-semibold">{{ companyInfo?.ceo }}</p>
+            <p class="text-muted-foreground text-sm">
+              CEO
+            </p>
+            <p class="font-semibold">
+              {{ companyInfo?.ceo }}
+            </p>
           </div>
         </div>
       </div>
@@ -235,8 +274,12 @@ function getAllSubsidiaries(company: CompanyWithRelations): Company[] {
         <div class="flex items-center gap-3">
           <DollarSign class="h-8 w-8 text-green-600" />
           <div>
-            <p class="text-muted-foreground text-sm">Annual Revenue</p>
-            <p class="text-2xl font-bold">{{ companyInfo?.revenue }}</p>
+            <p class="text-muted-foreground text-sm">
+              Annual Revenue
+            </p>
+            <p class="text-2xl font-bold">
+              {{ companyInfo?.revenue }}
+            </p>
           </div>
         </div>
       </Card>
@@ -245,8 +288,12 @@ function getAllSubsidiaries(company: CompanyWithRelations): Company[] {
         <div class="flex items-center gap-3">
           <TrendingUp class="h-8 w-8 text-blue-600" />
           <div>
-            <p class="text-muted-foreground text-sm">Market Cap</p>
-            <p class="text-2xl font-bold">{{ companyInfo?.marketCap }}</p>
+            <p class="text-muted-foreground text-sm">
+              Market Cap
+            </p>
+            <p class="text-2xl font-bold">
+              {{ companyInfo?.marketCap }}
+            </p>
           </div>
         </div>
       </Card>
@@ -258,8 +305,12 @@ function getAllSubsidiaries(company: CompanyWithRelations): Company[] {
         <div class="flex items-center gap-3">
           <Package class="h-8 w-8 text-blue-600" />
           <div>
-            <p class="text-muted-foreground text-sm">Direct Brands</p>
-            <p class="text-2xl font-bold">{{ stats?.directBrands }}</p>
+            <p class="text-muted-foreground text-sm">
+              Direct Brands
+            </p>
+            <p class="text-2xl font-bold">
+              {{ stats?.directBrands }}
+            </p>
           </div>
         </div>
       </Card>
@@ -268,8 +319,12 @@ function getAllSubsidiaries(company: CompanyWithRelations): Company[] {
         <div class="flex items-center gap-3">
           <Package class="h-8 w-8 text-green-600" />
           <div>
-            <p class="text-muted-foreground text-sm">Total Brands</p>
-            <p class="text-2xl font-bold">{{ stats?.totalBrands }}</p>
+            <p class="text-muted-foreground text-sm">
+              Total Brands
+            </p>
+            <p class="text-2xl font-bold">
+              {{ stats?.totalBrands }}
+            </p>
           </div>
         </div>
       </Card>
@@ -278,8 +333,12 @@ function getAllSubsidiaries(company: CompanyWithRelations): Company[] {
         <div class="flex items-center gap-3">
           <Building2 class="h-8 w-8 text-purple-600" />
           <div>
-            <p class="text-muted-foreground text-sm">Subsidiaries</p>
-            <p class="text-2xl font-bold">{{ stats?.subsidiaries }}</p>
+            <p class="text-muted-foreground text-sm">
+              Subsidiaries
+            </p>
+            <p class="text-2xl font-bold">
+              {{ stats?.subsidiaries }}
+            </p>
           </div>
         </div>
       </Card>
@@ -288,8 +347,12 @@ function getAllSubsidiaries(company: CompanyWithRelations): Company[] {
         <div class="flex items-center gap-3">
           <Network class="h-8 w-8 text-orange-600" />
           <div>
-            <p class="text-muted-foreground text-sm">Categories</p>
-            <p class="text-2xl font-bold">{{ stats?.categories }}</p>
+            <p class="text-muted-foreground text-sm">
+              Categories
+            </p>
+            <p class="text-2xl font-bold">
+              {{ stats?.categories }}
+            </p>
           </div>
         </div>
       </Card>
@@ -314,7 +377,9 @@ function getAllSubsidiaries(company: CompanyWithRelations): Company[] {
 
     <!-- Subsidiaries -->
     <div v-if="(company.subsidiaries || []).length > 0">
-      <h3 class="mb-4 text-xl font-semibold">Subsidiaries</h3>
+      <h3 class="mb-4 text-xl font-semibold">
+        Subsidiaries
+      </h3>
       <div class="grid gap-3 md:grid-cols-2">
         <Card
           v-for="subsidiary in (company.subsidiaries || [])"
@@ -324,9 +389,11 @@ function getAllSubsidiaries(company: CompanyWithRelations): Company[] {
         >
           <div class="flex items-center justify-between">
             <div>
-              <h4 class="font-semibold">{{ subsidiary.name }}</h4>
+              <h4 class="font-semibold">
+                {{ subsidiary.name }}
+              </h4>
               <p class="text-muted-foreground mt-1 text-sm">
-                {{brandStore.brands.filter(b => b.owner_id === subsidiary.id).length}} brands
+                {{ brandStore.brands.filter(b => b.owner_id === subsidiary.id).length }} brands
               </p>
             </div>
             <ArrowLeft class="text-muted-foreground h-4 w-4 rotate-180" />
@@ -337,21 +404,42 @@ function getAllSubsidiaries(company: CompanyWithRelations): Company[] {
 
     <!-- Brands -->
     <div>
-      <h3 class="mb-4 text-xl font-semibold">Brands ({{ (company.brands || []).length }})</h3>
-      <div v-if="(company.brands || []).length > 0" class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <BrandCard v-for="brand in (company.brands || [])" :key="brand.id" :brand="brand" />
+      <h3 class="mb-4 text-xl font-semibold">
+        Brands ({{ (company.brands || []).length }})
+      </h3>
+      <div
+        v-if="(company.brands || []).length > 0"
+        class="grid gap-4 md:grid-cols-2 lg:grid-cols-3"
+      >
+        <BrandCard
+          v-for="brand in (company.brands || [])"
+          :key="brand.id"
+          :brand="brand"
+        />
       </div>
-      <Card v-else class="p-8 text-center">
+      <Card
+        v-else
+        class="p-8 text-center"
+      >
         <Package class="text-muted-foreground mx-auto mb-4 h-12 w-12" />
-        <p class="text-muted-foreground">No brands directly owned by this company</p>
+        <p class="text-muted-foreground">
+          No brands directly owned by this company
+        </p>
       </Card>
     </div>
   </div>
 
   <!-- Not Found State -->
-  <div v-else class="py-12 text-center">
+  <div
+    v-else
+    class="py-12 text-center"
+  >
     <Building2 class="text-muted-foreground mx-auto mb-4 h-12 w-12" />
-    <h3 class="mb-2 text-lg font-semibold">Company not found</h3>
-    <Button @click="router.push('/')"> Return to Dashboard </Button>
+    <h3 class="mb-2 text-lg font-semibold">
+      Company not found
+    </h3>
+    <Button @click="router.push('/')">
+      Return to Dashboard
+    </Button>
   </div>
 </template>

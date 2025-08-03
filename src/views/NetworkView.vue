@@ -6,7 +6,9 @@ import Card from '@/components/ui/Card.vue'
 <template>
   <div class="h-[calc(100vh-12rem)]">
     <div class="mb-6">
-      <h2 class="text-3xl font-bold tracking-tight">Network Visualization</h2>
+      <h2 class="text-3xl font-bold tracking-tight">
+        Network Visualization
+      </h2>
       <p class="text-muted-foreground mt-2">
         Interactive graph showing relationships between companies and their brands
       </p>

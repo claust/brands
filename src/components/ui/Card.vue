@@ -13,3 +13,5 @@ const props = defineProps<Props>()
     <slot />
   </div>
 </template>
+
+<!-- Card component provides styled container with shadows -->

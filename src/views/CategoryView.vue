@@ -1,14 +1,11 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import { useBrandStore } from '@/stores/brandStore'
-import type { Category } from '@/types'
-import Card from '@/components/ui/Card.vue'
 import Button from '@/components/ui/Button.vue'
 import BrandCard from '@/components/common/BrandCard.vue'
-import { Package, Building2 } from 'lucide-vue-next'
+import { Package } from 'lucide-vue-next'
 
 const brandStore = useBrandStore()
-const selectedCategory = ref<Category | null>(null)
 
 const categories = computed(() => {
   const categoriesArray = Array.from(brandStore.brandsByCategory.entries())
@@ -20,8 +17,8 @@ const categories = computed(() => {
 })
 
 const displayedBrands = computed(() => {
-  if (selectedCategory.value) {
-    return brandStore.brandsByCategory.get(selectedCategory.value) || []
+  if (brandStore.selectedCategory) {
+    return brandStore.brandsByCategory.get(brandStore.selectedCategory) || []
   }
   return brandStore.filteredBrands
 })
@@ -48,8 +45,12 @@ function getCategoryColor(category: string) {
 <template>
   <div class="space-y-6">
     <div>
-      <h2 class="text-3xl font-bold tracking-tight">Browse by Category</h2>
-      <p class="text-muted-foreground mt-2">Explore brands organized by product categories</p>
+      <h2 class="text-3xl font-bold tracking-tight">
+        Browse by Category
+      </h2>
+      <p class="text-muted-foreground mt-2">
+        Explore brands organized by product categories
+      </p>
     </div>
 
     <!-- Category Pills -->
@@ -57,16 +58,16 @@ function getCategoryColor(category: string) {
       <Button
         v-for="category in categories"
         :key="category.name"
-        :variant="selectedCategory === category.name ? 'default' : 'secondary'"
+        :variant="brandStore.selectedCategory === category.name ? 'default' : 'secondary'"
         size="sm"
-        @click="selectedCategory = selectedCategory === category.name ? null : category.name"
         class="gap-1"
+        @click="brandStore.selectedCategory = brandStore.selectedCategory === category.name ? null : category.name"
       >
         <span>{{ category.name }}</span>
         <span
           :class="[
             'rounded-full px-1.5 py-0.5 text-xs',
-            selectedCategory === category.name
+            brandStore.selectedCategory === category.name
               ? 'bg-primary-foreground/20'
               : getCategoryColor(category.name)
           ]"
@@ -79,12 +80,17 @@ function getCategoryColor(category: string) {
     <!-- Results Header -->
     <div class="flex items-center justify-between">
       <h3 class="text-lg font-semibold">
-        {{ selectedCategory ? `${selectedCategory} Brands` : 'All Brands' }}
+        {{ brandStore.selectedCategory ? `${brandStore.selectedCategory} Brands` : 'All Brands' }}
         <span class="text-muted-foreground ml-2 text-sm">
           ({{ displayedBrands.length }} results)
         </span>
       </h3>
-      <Button v-if="selectedCategory" variant="ghost" size="sm" @click="selectedCategory = null">
+      <Button
+        v-if="brandStore.selectedCategory"
+        variant="ghost"
+        size="sm"
+        @click="brandStore.selectedCategory = null"
+      >
         Clear Filter
       </Button>
     </div>
@@ -94,14 +100,25 @@ function getCategoryColor(category: string) {
       v-if="displayedBrands.length > 0"
       class="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
     >
-      <BrandCard v-for="brand in displayedBrands" :key="brand.id" :brand="brand" />
+      <BrandCard
+        v-for="brand in displayedBrands"
+        :key="brand.id"
+        :brand="brand"
+      />
     </div>
 
     <!-- Empty State -->
-    <div v-else class="py-12 text-center">
+    <div
+      v-else
+      class="py-12 text-center"
+    >
       <Package class="text-muted-foreground mx-auto mb-4 h-12 w-12" />
-      <h3 class="mb-2 text-lg font-semibold">No brands found</h3>
-      <p class="text-muted-foreground">Try adjusting your search or category filter</p>
+      <h3 class="mb-2 text-lg font-semibold">
+        No brands found
+      </h3>
+      <p class="text-muted-foreground">
+        Try adjusting your search or category filter
+      </p>
     </div>
   </div>
 </template>
