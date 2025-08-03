@@ -58,7 +58,7 @@ function navigateToCompany() {
 </script>
 
 <template>
-  <Card class="group cursor-pointer p-4 transition-all hover:shadow-lg" @click="navigateToCompany">
+  <Card class="group p-4">
     <div class="space-y-3">
       <div class="flex items-start justify-between">
         <div class="flex items-center gap-3">
@@ -70,13 +70,10 @@ function navigateToCompany() {
               @error="$event.target.style.display = 'none'"
             />
           </div>
-          <h3 class="group-hover:text-primary text-lg font-semibold transition-colors">
+          <h3 class="text-lg font-semibold">
             {{ brand.name }}
           </h3>
         </div>
-        <ArrowRight
-          class="text-muted-foreground h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100"
-        />
       </div>
 
       <span
