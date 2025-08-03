@@ -2,31 +2,21 @@
 
 Vue 3 + Vite app with shadcn/ui for visualizing brand-company relationships.
 
-## 🚀 Rolldown Integration
-
-This project uses **Rolldown** as the bundler with Vite for improved performance. Rolldown is a Rust-based bundler that's significantly faster than traditional JavaScript bundlers.
-
-### Setup Rolldown
-
-To use Rolldown with this project, the `package.json` should be configured with:
-
-```json
-{
-  "dependencies": {
-    "vite": "npm:rolldown-vite@latest"
-  }
-}
-```
-
-After updating `package.json`, run `npm install` to install Rolldown-enabled Vite.
-
 ## Key Commands
 
 ```bash
-npm run dev      # Start development server
-npm run build    # Build for production
-npm run lint     # Check code quality
+# Development
+npm run dev       # Start development server
+npm run build     # Build for production
+npm run preview   # Preview production build
+npm run lint      # Check code quality with oxlint
 npm run typecheck # TypeScript checking
+npm run format    # Format code with Prettier
+
+# Testing
+npm run test         # Run Playwright tests
+npm run test:ui      # Run tests with UI
+npm run test:report  # Show test report
 
 # Logo Search Tool
 npm run logo-search:test    # Test with first 5 brands
@@ -46,10 +36,15 @@ npm run company-info:resume  # Resume interrupted scraping
 npm run company-info:extract # Prepare extraction prompts for AI
 npm run company-info:merge   # Merge extracted data into dataset
 
-# Edge Functions (Deno)
+# Supabase Edge Functions
 npm run functions:check  # TypeScript checking for Edge Functions
 npm run functions:lint   # Lint Edge Functions with Deno
 npm run functions:fmt    # Format Edge Functions with Deno
+
+# Database Migrations
+npm run migrate       # Push database changes
+npm run migrate:new   # Create new migration
+npm run migrate:list  # List migrations
 ```
 
 ## Core Features
@@ -70,13 +65,22 @@ npm run functions:fmt    # Format Edge Functions with Deno
 - D3.js for visualizations
 - Vue Router, Pinia
 - Tailwind CSS
-- **Vite with Rolldown bundler** for blazing fast builds
+- Vite with Rolldown bundler for blazing fast builds
+- TypeScript for type safety
+- Playwright for E2E testing
+- oxlint for fast linting
 
 ## Data Structure
 
-**Supabase Database:**
-- `companies` table: id, name, parent_id, headquarters, founded, employees, revenue, metadata
-- `brands` table: id, name, owner_id, category
+**Supabase Database Tables:**
+
+- `companies`: Core company information
+  - `id`, `name`, `parent_id` (for ownership hierarchy)
+  - `headquarters`, `founded`, `employees`, `revenue`
+  - `metadata` (JSON for additional data)
+- `brands`: Brand ownership mapping
+  - `id`, `name`, `owner_id` (references companies.id)
+  - `category` (Food, Tech, etc.)
 
 ## Focus Areas
 
@@ -91,6 +95,7 @@ npm run functions:fmt    # Format Edge Functions with Deno
 ## Data Collection Tools
 
 ### Logo Search Tool (`scripts/logo-searcher.ts`)
+
 - Automatically searches Bing Images for brand logos
 - Downloads up to 3 logo variants per brand
 - Organizes logos in `public/logos/[brand-id]/` folders
@@ -98,6 +103,7 @@ npm run functions:fmt    # Format Edge Functions with Deno
 - Processes all 674+ brands sequentially with rate limiting
 
 ### Logo Standardization Tool (`scripts/logo-standardizer.ts`)
+
 - Standardizes all logos to 200x200px WebP format
 - Uses Sharp for high-performance image processing
 - Maintains quality at 85% compression
@@ -108,6 +114,7 @@ npm run functions:fmt    # Format Edge Functions with Deno
 Both tools integrate seamlessly with the Vue app for optimal logo display.
 
 ### Company Info Scraper (`scripts/company-info-scraper.ts`)
+
 - Searches for company official websites via Bing
 - Fetches homepage and About page content
 - Saves raw text content for AI-powered extraction
@@ -116,6 +123,7 @@ Both tools integrate seamlessly with the Vue app for optimal logo display.
 - Outputs to `public/company-info/[company-id]/`
 
 ### Company Info Extractor (`scripts/company-info-extractor.ts`)
+
 - Prepares extraction prompts for AI processing
 - Reviews scraped content and current extraction status
 - Generates prompts for Claude to extract:
