@@ -1,66 +1,66 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { useBrandStore } from '@/stores/brandStore'
-import Card from '@/components/ui/Card.vue'
-import Button from '@/components/ui/Button.vue'
-import BrandCard from '@/components/common/BrandCard.vue'
-import { Building2, Package, ArrowLeft, Network, Users, DollarSign, Globe, TrendingUp, MapPin, Calendar } from 'lucide-vue-next'
-import type { CompanyWithRelations, Company } from '@/types'
+import { ref, computed, onMounted, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { useBrandStore } from '@/stores/brandStore';
+import Card from '@/components/ui/Card.vue';
+import Button from '@/components/ui/Button.vue';
+import BrandCard from '@/components/common/BrandCard.vue';
+import { Building2, Package, ArrowLeft, Network, Users, DollarSign, Globe, TrendingUp, MapPin, Calendar } from 'lucide-vue-next';
+import type { CompanyWithRelations, Company } from '@/types';
 
-const route = useRoute()
-const router = useRouter()
-const brandStore = useBrandStore()
+const route = useRoute();
+const router = useRouter();
+const brandStore = useBrandStore();
 
-const company = ref<CompanyWithRelations | null>(null)
-const isLoading = ref(true)
+const company = ref<CompanyWithRelations | null>(null);
+const isLoading = ref(true);
 
 const loadCompany = async () => {
-  isLoading.value = true
+  isLoading.value = true;
   try {
-    company.value = await brandStore.getCompanyById(route.params.id as string)
+    company.value = await brandStore.getCompanyById(route.params['id'] as string);
   } catch (error) {
-    console.error('Failed to load company:', error)
-    company.value = null
+    console.error('Failed to load company:', error);
+    company.value = null;
   } finally {
-    isLoading.value = false
+    isLoading.value = false;
   }
-}
+};
 
-onMounted(loadCompany)
-watch(() => route.params.id, loadCompany)
+onMounted(loadCompany);
+watch(() => route.params['id'], loadCompany);
 
 const parentCompany = computed(() => {
-  if (!company.value?.parent_id) return null
-  return brandStore.companies.find((c) => c.id === company.value?.parent_id)
-})
+  if (!company.value?.parent_id) return null;
+  return brandStore.companies.find((c) => c.id === company.value?.parent_id);
+});
 
 const stats = computed(() => {
-  if (!company.value) return null
+  if (!company.value) return null;
 
-  const allBrands = [...(company.value.brands || [])]
-  const allSubsidiaries = getAllSubsidiaries(company.value)
-  
+  const allBrands = [...(company.value.brands || [])];
+  const allSubsidiaries = getAllSubsidiaries(company.value);
+
   // Get brands for all subsidiaries from the brand store
   allSubsidiaries.forEach((sub) => {
-    const subsidiaryBrands = brandStore.brands.filter(b => b.owner_id === sub.id)
-    allBrands.push(...subsidiaryBrands)
-  })
+    const subsidiaryBrands = brandStore.brands.filter(b => b.owner_id === sub.id);
+    allBrands.push(...subsidiaryBrands);
+  });
 
-  const categories = new Set(allBrands.map((b) => b.category))
+  const categories = new Set(allBrands.map((b) => b.category));
 
   return {
     directBrands: (company.value.brands || []).length,
     totalBrands: allBrands.length,
     subsidiaries: (company.value.subsidiaries || []).length,
     categories: categories.size
-  }
-})
+  };
+});
 
 // Enhanced fake company data
 const companyInfo = computed(() => {
-  if (!company.value) return null
-  
+  if (!company.value) return null;
+
   // Generate fake but realistic company data based on company name
   const fakeData = {
     nestle: {
@@ -118,12 +118,12 @@ const companyInfo = computed(() => {
       keyMarkets: ['Global Operations', 'North America', 'Europe', 'Asia'],
       ticker: 'Private Company'
     }
-  }
-  
+  };
+
   // Return specific data or generate generic data
-  const companyId = company.value?.id
-  if (!companyId) return null
-  
+  const companyId = company.value?.id;
+  if (!companyId) return null;
+
   return fakeData[companyId as keyof typeof fakeData] || {
     founded: Math.floor(Math.random() * 50 + 1950).toString(),
     headquarters: 'Global',
@@ -134,24 +134,24 @@ const companyInfo = computed(() => {
     description: `${company.value?.name || 'Company'} is a leading global company operating across multiple markets and categories.`,
     keyMarkets: ['North America', 'Europe', 'Asia-Pacific'],
     ticker: 'N/A'
-  }
-})
+  };
+});
 
 function getAllSubsidiaries(company: CompanyWithRelations): Company[] {
-  const subs: Company[] = []
+  const subs: Company[] = [];
   if (company.subsidiaries && Array.isArray(company.subsidiaries)) {
     company.subsidiaries.forEach((sub: Company) => {
-      subs.push(sub)
+      subs.push(sub);
       // Convert Company to CompanyWithRelations for recursive call
       const subWithRelations: CompanyWithRelations = {
         ...sub,
         brands: [],
         subsidiaries: []
-      }
-      subs.push(...getAllSubsidiaries(subWithRelations))
-    })
+      };
+      subs.push(...getAllSubsidiaries(subWithRelations));
+    });
   }
-  return subs
+  return subs;
 }
 </script>
 
@@ -326,7 +326,7 @@ function getAllSubsidiaries(company: CompanyWithRelations): Company[] {
             <div>
               <h4 class="font-semibold">{{ subsidiary.name }}</h4>
               <p class="text-muted-foreground mt-1 text-sm">
-                {{ brandStore.brands.filter(b => b.owner_id === subsidiary.id).length }} brands
+                {{brandStore.brands.filter(b => b.owner_id === subsidiary.id).length}} brands
               </p>
             </div>
             <ArrowLeft class="text-muted-foreground h-4 w-4 rotate-180" />
