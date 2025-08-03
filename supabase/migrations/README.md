@@ -33,13 +33,13 @@ npm run migrate:list
 2. **Authentication Troubleshooting**:
    If you encounter SASL authentication errors, use the explicit password flag:
    ```bash
-   supabase link --project-ref <project-ref> --password <db-password>
+   supabase link --project-ref <project-ref> --password $SUPABASE_DB_PASSWORD
    ```
 
 3. **Applying Migrations**:
    ```bash
    # Push migrations with explicit password if needed
-   supabase db push --password <db-password>
+   supabase db push --password $SUPABASE_DB_PASSWORD
    ```
 
 #### Common Authentication Issues
@@ -48,10 +48,16 @@ npm run migrate:list
 
 **Solution**: Use the `--password` flag explicitly:
 ```bash
-supabase db push --password <your-db-password>
+supabase db push --password $SUPABASE_DB_PASSWORD
 ```
 
 The CLI sometimes has issues with stored credentials, so providing the password explicitly resolves most authentication problems.
+
+**Note**: The database password is stored in `.env` as `SUPABASE_DB_PASSWORD`. Make sure to source the environment variables:
+```bash
+source .env
+supabase db push --password $SUPABASE_DB_PASSWORD
+```
 
 ### Migration Workflow
 
