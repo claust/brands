@@ -27,7 +27,10 @@
     "company-info:merge": "tsx scripts/company-info-merger.ts",
     "functions:check": "cd supabase/functions && deno check companies/index.ts brands/index.ts search/index.ts stats/index.ts",
     "functions:lint": "cd supabase/functions && deno lint",
-    "functions:fmt": "cd supabase/functions && deno fmt"
+    "functions:fmt": "cd supabase/functions && deno fmt",
+    "migrate": "supabase db push",
+    "migrate:new": "supabase migration new",
+    "migrate:list": "supabase migration list"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.53.0",
