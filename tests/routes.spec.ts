@@ -54,6 +54,37 @@ test.describe('Route Navigation Tests', () => {
     await expect(page.locator('#app')).toBeVisible();
   });
 
+  test('Company name is displayed correctly on company details page', async ({ page }) => {
+    // Test with Procter & Gamble specifically
+    await page.goto('/company/procter_gamble');
+    
+    // Wait for content to load - either loading state or main content
+    await page.waitForTimeout(3000);
+    
+    // Wait for the company name to be displayed (should not be "undefined")
+    await expect(page.locator('h2').first()).toBeVisible({ timeout: 15000 });
+    
+    // Verify the page shows the actual company name (not undefined or empty)
+    const companyHeading = page.locator('h2').first();
+    await expect(companyHeading).toBeVisible();
+    
+    const headingText = await companyHeading.textContent();
+    expect(headingText).toBeTruthy();
+    expect(headingText).not.toBe('undefined');
+    expect(headingText?.trim()).not.toBe('');
+    
+    // Specific check that it shows "Procter & Gamble"
+    await expect(companyHeading).toContainText('Procter');
+    
+    // Also check that the brands section shows actual data
+    const brandsSection = page.locator('h3').filter({ hasText: /Brands \(\d+\)/ });
+    await expect(brandsSection).toBeVisible();
+    
+    // Check that brand count is greater than 0 (P&G should have brands)
+    const brandsCountText = await brandsSection.textContent();
+    expect(brandsCountText).toMatch(/Brands \((?!0\))\d+\)/);
+  });
+
   test('Navigation between routes works', async ({ page }) => {
     // Start at dashboard
     await page.goto('/');
