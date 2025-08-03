@@ -72,6 +72,23 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
         
+      - name: Start dev server
+        run: npm run dev &
+        
+      - name: Wait for server to be ready
+        run: |
+          echo "Waiting for server to start..."
+          for i in {1..30}; do
+            if curl -f http://localhost:5173 >/dev/null 2>&1; then
+              echo "Server is ready!"
+              exit 0
+            fi
+            echo "Attempt $i: Server not ready yet, waiting..."
+            sleep 2
+          done
+          echo "Server failed to start after 60 seconds"
+          exit 1
+          
       - name: Run Playwright tests
         run: npx playwright test
         
