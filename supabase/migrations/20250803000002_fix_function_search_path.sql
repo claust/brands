@@ -1,10 +1,8 @@
 -- Fix Function Search Path Mutable issue for update_updated_at_column function
 -- This addresses the Supabase lint warning about mutable search_path
 
--- Drop the existing function
-DROP FUNCTION IF EXISTS public.update_updated_at_column();
-
 -- Recreate the function with explicit search_path for security
+-- Using CREATE OR REPLACE to avoid dependency issues with triggers
 CREATE OR REPLACE FUNCTION public.update_updated_at_column()
 RETURNS TRIGGER
 LANGUAGE plpgsql
