@@ -16,6 +16,7 @@ export default [
         Image: 'readonly',
         URL: 'readonly',
         setTimeout: 'readonly',
+        MouseEvent: 'readonly',
         // SVG DOM types
         SVGSVGElement: 'readonly',
         SVGGElement: 'readonly',

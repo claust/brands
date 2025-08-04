@@ -1,12 +1,18 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, computed } from 'vue'
 import * as d3 from 'd3'
+import type { Brand } from '@/types'
 import { useBrandStore } from '@/stores/brandStore'
 import { getBrandLogoPath } from '@/utils/logoUtils'
+import BrandCard from '@/components/common/BrandCard.vue'
+import { DialogRoot, DialogPortal, DialogOverlay, DialogContent, DialogClose } from 'radix-vue'
+import { X } from 'lucide-vue-next'
 
 const brandStore = useBrandStore()
 const svgRef = ref<SVGSVGElement | null>(null)
 const selectedNodeId = ref<string | null>(null)
+const showBrandDialog = ref(false)
+const selectedBrand = ref<Brand | null>(null)
 
 interface Node {
   id: string
@@ -257,8 +263,18 @@ function initializeGraph() {
           .attr('height', 20)
       }
     })
-    .on('click', (event, d) => {
+    .on('click', (_event, d) => {
       selectedNodeId.value = d.id
+      
+      // If it's a brand node, show the brand card dialog
+      if (d.type === 'brand') {
+        const brandId = d.id.replace('brand-', '')
+        const brand = brandStore.brands.find(b => b.id === brandId)
+        if (brand) {
+          selectedBrand.value = brand
+          showBrandDialog.value = true
+        }
+      }
     })
 
   // Update positions on tick
@@ -274,8 +290,8 @@ function initializeGraph() {
 
   function dragstarted(event: d3.D3DragEvent<SVGGElement, Node, Node>, d: Node) {
     if (!event.active) simulation.alphaTarget(0.3).restart()
-    d.fx = d.x
-    d.fy = d.y
+    d.fx = d.x ?? 0
+    d.fy = d.y ?? 0
   }
 
   function dragged(event: d3.D3DragEvent<SVGGElement, Node, Node>, d: Node) {
@@ -306,7 +322,7 @@ function initializeGraph() {
       svg
         .transition()
         .duration(750)
-        .call(zoom.transform, d3.zoomIdentity.translate(translate[0], translate[1]).scale(scale))
+        .call(zoom.transform, d3.zoomIdentity.translate(translate[0] ?? 0, translate[1] ?? 0).scale(scale))
     }
   }, 1000)
 }
@@ -353,8 +369,30 @@ watch(
     <!-- Controls -->
     <div class="bg-card absolute bottom-4 left-4 rounded-lg p-2 shadow-lg">
       <p class="text-muted-foreground text-sm">
-        Drag to pan • Scroll to zoom • Click nodes for details
+        Drag to pan • Scroll to zoom • Click brands for details
       </p>
     </div>
+
+    <!-- Brand Details Dialog -->
+    <DialogRoot v-model:open="showBrandDialog">
+      <DialogPortal>
+        <DialogOverlay class="fixed inset-0 z-50 bg-black/50 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
+        <DialogContent class="fixed left-[50%] top-[50%] z-50 w-full max-w-md translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg">
+          <div class="flex items-center justify-between">
+            <h2 class="text-lg font-semibold">
+              Brand Details
+            </h2>
+            <DialogClose class="rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none">
+              <X class="h-4 w-4" />
+              <span class="sr-only">Close</span>
+            </DialogClose>
+          </div>
+          
+          <div v-if="selectedBrand">
+            <BrandCard :brand="selectedBrand" />
+          </div>
+        </DialogContent>
+      </DialogPortal>
+    </DialogRoot>
   </div>
 </template>
