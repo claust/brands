@@ -19,13 +19,21 @@
     "logo-standardize": "tsx scripts/logo-standardizer.ts",
     "logo-standardize:resume": "tsx scripts/logo-standardizer.ts --resume",
     "logo-standardize:test": "tsx scripts/logo-standardizer.ts --limit=5",
-    "logo-standardize:stats": "tsx scripts/logo-standardizer.ts --stats"
+    "logo-standardize:stats": "tsx scripts/logo-standardizer.ts --stats",
+    "migrate:appwrite": "tsx scripts/migrate-to-appwrite.ts",
+    "migrate:appwrite:dry-run": "tsx scripts/migrate-to-appwrite.ts --dry-run",
+    "migrate:appwrite:companies": "tsx scripts/migrate-to-appwrite.ts --companies-only",
+    "migrate:appwrite:brands": "tsx scripts/migrate-to-appwrite.ts --brands-only",
+    "migrate:logos": "tsx scripts/upload-logos-to-appwrite.ts",
+    "migrate:logos:dry-run": "tsx scripts/upload-logos-to-appwrite.ts --dry-run",
+    "migrate:logos:resume": "tsx scripts/upload-logos-to-appwrite.ts --skip-existing"
   },
   "dependencies": {
     "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/typography": "^0.5.16",
     "@types/sharp": "^0.31.1",
     "@vueuse/core": "^13.6.0",
+    "appwrite": "^16.0.2",
     "autoprefixer": "^10.4.21",
     "d3": "^7.9.0",
     "lucide-vue-next": "^0.536.0",

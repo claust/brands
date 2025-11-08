@@ -43,6 +43,10 @@ test-results
 .env.test.local
 .env.production.local
 
+# Migration progress files
+scripts/migration-progress.json
+scripts/logo-upload-progress.json
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
